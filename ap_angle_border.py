@@ -9,16 +9,16 @@ import cv2 as cv
 import numpy as np
 import math 
 import os
-os.chdir("D:/L_Learning/computer vision/project 2")
+os.chdir("D:/L_Learning/computer vision/project 2/openCV")
 
 #This is a wrapper for openCV basics
 import basic_function as bf
 
 
 
-#Frame="frame3"
-#img = cv.imread("vid2frame/"+Frame+".png")
-#bf.show_image(img)
+Frame="logo"
+img = cv.imread(Frame+".png")
+bf.show_image(img)
 
 
 def angle_detection(img, lower_mask = [161, 155, 84], upper_mask = [179, 255, 255], m = 4):
