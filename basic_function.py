@@ -121,4 +121,18 @@ def distance(point, line):
         side_of_origin = False
     return([dist, side_of_origin])
 
+def angle(line1 , line2):
+    """
+    THis program helps finding  angle between 
+    two lines (openCV "Hough Line Transform detected" line )
+    
+    """  
+    # Getting two points (pt1 and pt2) in cartesian coordinate from Houghline transformed line
+    theta1, theta2 = line1[1], line2[1]     
+    m1, m2 = math.tan(theta1), math.tan(theta2)
+    
+    tan_angle = (m2 - m1)/(1 + m1*m2)
+    angle = math.atan(tan_angle)
+    return(angle)
+
 
