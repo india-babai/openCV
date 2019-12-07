@@ -112,7 +112,10 @@ def combo(img):
         dist_yel.append(temp[1])
         dist_blue.append(temp[2])
         
-    #Removing the audiences (Not final yet: Need to add some filters based on yellow line)
+#    Deciding if the upper yellow or the side yellow is captured
+    
+        
+    #Removing the audiences (Not final yet: Need to add some filters based on yellow line, if required)
     index_final = []
     for i in range(len(pedals_adj)):
         if dist_red[i][1] == False:
@@ -120,9 +123,10 @@ def combo(img):
         else:
             index_final.append(i)
     #Checking if the audiences are really removed
-#    img5 = img.copy() 
-#    for x in index_final:
-#        cv.circle(img5, pedals_adj[x], 2, (0, 0, 255), 3)
+    img5 = img.copy()
+    for x in index_final:
+        cv.circle(img5, pedals_adj[x], 2, (0, 0, 255), 3)
+        cv.putText(img5,str(x), pedals_adj[x], cv.FONT_HERSHEY_SIMPLEX, 0.8, 255, 2)
 #    bf.show_image(img5)
     
     #---#
@@ -144,10 +148,14 @@ def combo(img):
             dist_blue[i][0] = 0.725 * dist_blue[i][0]
             
 
+
+#Scaling
 #        dist_blue[i][0] = 0.725 * dist_blue[i][0]
 #        dist_red[i][0] = 2.27*dist_red[i][0]
 #        dist_yel[i][0] = 2.27*dist_yel[i][0]
        
+    ang_hor = red[1][0]
+    
     
     
 
@@ -175,26 +183,27 @@ def combo(img):
                         coordinate_final.append((x,y)) 
         else:
             if dist_red[i] is not None:
-                    x = int(1065 - 0.4*dist_yel[i][0]/abs(math.sin(ang_yel_red)))
-                    y = int(621 - dist_red[i][0]/abs(math.sin(ang_yel_red)))
+                    x = int(1065 - 0.5*dist_yel[i][0]/abs(math.sin(ang_yel_red)))
+                    y = int(621 - dist_red[i][0]* 621/(max(fin_red)[0] + 30))
                     coordinate_final.append((x,y))        
 
-
-     
-    
-    
-    
+        
     
     template2 = template.copy()
-#    bf.show_image(template2)
-
-    for w in coordinate_final:
+    for w, i in zip(coordinate_final, index_final):
         if w is not None:
             cv.circle(template2, w, 15, (0, 255, 0), 2)
-    bf.show_image(template2)
-   
+            cv.putText(template2, str(i), w, cv.FONT_HERSHEY_SIMPLEX, 0.8, 255, 2)
+#    bf.show_image(template2)
+    temp3 = cv.resize(template2, (640, 360))
+    vis = np.concatenate((img5, temp3), axis = 0)
+#    bf.show_image(vis)
     
-    return(template2)
+    
+    
+    
+    
+    return([template2, vis])
 
 
 frame="rink template"
@@ -210,11 +219,11 @@ bf.show_image(img)
 l = combo(img)
 bf.show_image(l)
 
-for i in  range(41):
+for i in  range(19, 26):
     img = cv.imread("vid2frame/"+ "frame_v2_" + str(i) + ".png")
     try:
         final_image = combo(img)
-        cv.imwrite("vid2frame" + "/final" + str(i) + ".png", final_image)
+        cv.imwrite("vid2frame" + "/comb_" + str(i) + ".png", final_image[1])
     except:
         pass
     print(i)
