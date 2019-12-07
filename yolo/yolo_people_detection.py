@@ -10,17 +10,17 @@ Created on Mon Nov 25 02:36:24 2019
 #####---- For running this file from this script , uncomment the necessary libraries ----- ####
 
 import cv2 as cv # computer vision library
-#import numpy as np
-#import os
+import numpy as np
+import os
 ##
-#import sys
-#sys.path.insert(1, "D:/L_Learning/computer vision/project 2")
-#import basic_function as bf
+import sys
+sys.path.insert(1, "D:/L_Learning/computer vision/project 2")
+import basic_function as bf
 
-#yolo_path =  "D:/L_Learning/computer vision/project 2/yolo/"
-#weights =  "yolov3.weights"     #Weights and configuration file for yolo
-#config_file  =  "yolov3.cfg"
-#os.chdir(yolo_path)
+yolo_path =  "D:/L_Learning/computer vision/project 2/openCV/yolo/"
+weights =  "yolov3.weights"     #Weights and configuration file for yolo
+config_file  =  "yolov3.cfg"
+os.chdir(yolo_path)
 
 
 
