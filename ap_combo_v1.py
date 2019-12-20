@@ -46,7 +46,7 @@ bf.show_image(img)
 
 
 
-def combo(img):
+def combo(img, prev_img_pos = "Undefined"):
     
     ###Part 1: Tensorflow API people detection, refer to 'tfpeople detection.py'
     img2 = cv.resize(img, None, fx = 0.4, fy = 0.4)
@@ -139,8 +139,29 @@ def combo(img):
     
     #---#
 
+    ###Part 6: Categorizing discrete sections on the field
+        # The entire field will be divided into three parts.
+        # Position = L: Left hand side of the field where ang_hor > pi/2
+        # Position = R: Right hand side
+        # Position = Undefined
+    position = "Undefined"  #Initialization
+    if red is None:
+        if blue is not None:
+            if blue[1][0] < math.pi/2:
+                position = "L"
+        else:
+            position = "Undefined"
+    else:
+        if red[1][0] < math.pi / 2:
+            position = "R"
     
-    ###Part 6:  Mapping pedals and distances on the template rink
+    if position == "Undefined":
+        position = prev_img_pos
+            
+            
+      #---#  
+    
+    ###Part 7:  Mapping pedals and distances on the template rink
     # This scaling is very inportant part! 
     # As ultimately the coordinates depend on how accurate the scaling is.
     
@@ -165,10 +186,10 @@ def combo(img):
        
     #---#
         
-    ang_hor = red[1][0]
+
     
     
-    ###Part 7:  PLacing the players in based on scaled final coordinates
+    ###Part 8:  PLacing the players in based on scaled final coordinates
 
     coordinate_final = []
     for i in index_final:
@@ -201,7 +222,7 @@ def combo(img):
     #---#
     
     
-    ###Part 8:  Drawing of final image that is to be returned 
+    ###Part 9:  Drawing of final image that is to be returned 
     template2 = template.copy()
     for w, i in zip(coordinate_final, index_final):
         if w is not None:
