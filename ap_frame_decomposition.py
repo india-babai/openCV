@@ -9,12 +9,12 @@ import numpy as np
 import math
 import os
 
-os.chdir('D:/L_Learning/computer vision/project 2')
+os.chdir('D:/L_Learning/computer vision/project 2/openCV')
 
 def vid_to_frame(vid_path, folder_path):
     video = cv2.VideoCapture(vid_path)
     count = 0
-    while video.isOpened() and count <= 40:
+    while video.isOpened() and count <= 150:
         
         #Setting(fast forwarding) the video at 'count'th milisecond
         video.set(cv2.CAP_PROP_POS_MSEC, count*100)
@@ -44,7 +44,7 @@ def vid_to_frame(vid_path, folder_path):
     cv2.destroyAllWindows()
     #End of vid_to_frame
 
-vid_to_frame('test.mp4', 'vid2frame')
+vid_to_frame('test.mp4', 'vid2frame/2019-12-20')
 cv2.destroyAllWindows()
 
 
