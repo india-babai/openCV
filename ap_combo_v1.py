@@ -4,11 +4,6 @@ Created on Sun Nov 24 01:43:33 2019
 
 @author: ariji
 """
-
-
-
-
-
 # Importing bassic necessary packages
 import cv2 as cv
 import numpy as np
@@ -16,15 +11,13 @@ import math
 from datetime import date
 import os
 os.chdir("D:/L_Learning/computer vision/project 2/openCV")
-#This is a wrapper for openCV basics
+# This is a wrapper for openCV basics
 import basic_function as bf
 # Border detection codes
 import ap_angle_border as ad
-#--#
+# --- #
 
-
-
-#Importing yolo folder
+# Importing yolo folder
 yolo_path =  "D:/L_Learning/computer vision/project 2/openCV/yolo"
 os.chdir(yolo_path)
 import sys
@@ -35,12 +28,9 @@ import yolo_people_detection as ypd
 #Changing the working directory back to what was earlier
 import os
 os.chdir("D:/L_Learning/computer vision/project 2/openCV")
-#--#
-
-
-
-frame_no = 58
-img = cv.imread("vid2frame/2019-12-20/"+ "frame_v2_" + str(frame_no) + ".png")
+# -- #
+frame_no = 71
+img = cv.imread("vid2frame/all frames/"+ "frame_v2_" + str(frame_no) + ".png")
 bf.show_image(img)
     
 
@@ -122,7 +112,7 @@ def combo(img, prev_img_pos = "Undefined"):
     index_final = []
     for i in range(len(pedals_adj)):
         if red is not None:
-            if dist_red[i][1] == True or dist_yel[i][1] == False:
+            if dist_red[i][1] == True and dist_yel[i][1] == False:
                 index_final.append(i)
             else:
                 pass
@@ -131,10 +121,10 @@ def combo(img, prev_img_pos = "Undefined"):
                 index_final.append(i)
                 
     #Checking if the audiences are really removed
-#    img5 = img.copy()
-#    for x in index_final:
-#        cv.circle(img5, pedals_adj[x], 2, (0, 0, 255), 3)
-#        cv.putText(img5,str(x), pedals_adj[x], cv.FONT_HERSHEY_SIMPLEX, 0.8, 255, 2)
+    img5 = img.copy()
+    for x in index_final:
+        cv.circle(img5, pedals_adj[x], 2, (0, 0, 255), 3)
+        cv.putText(img5,str(x), pedals_adj[x], cv.FONT_HERSHEY_SIMPLEX, 0.8, 255, 2)
 #    bf.show_image(img5)
     
     #---#
@@ -154,14 +144,15 @@ def combo(img, prev_img_pos = "Undefined"):
     else:
         if red[1][0] < math.pi / 2:
             position = "R"
+        else:
+            position = "L"
     
     if position == "Undefined":
         position = prev_img_pos
             
-            
       #---#  
     
-    ###Part 7:  Mapping pedals and distances on the template rink
+    ###Part 7:  SCALING : Mapping pedals and distances on the template rink
     # This scaling is very inportant part! 
     # As ultimately the coordinates depend on how accurate the scaling is.
     
@@ -190,34 +181,12 @@ def combo(img, prev_img_pos = "Undefined"):
     
     
     ###Part 8:  PLacing the players in based on scaled final coordinates
+        # Please refer to the conditional file: ap_if_else_chain.py which contains the chain of if-elses
 
     coordinate_final = []
-    for i in index_final:
-        if blue is not None:
-            if red is not None:
-                if dist_blue[i][1] == False:
-                    x = int(710 + dist_blue[i][0])
-                    y = int(621 - dist_red[i][0])
-                    coordinate_final.append((x,y))
-                else:
-                    x = int(710 - dist_blue[i][0])
-                    y = int(621 - dist_red[i][0])
-                    coordinate_final.append((x,y))
-            else:
-                if yellow is not None:
-                    if dist_blue[i][1] == False:
-                        x = int(710 + dist_blue[i][0])
-                        y = int(dist_yel[i][0])
-                        coordinate_final.append((x,y))
-                    else:
-                        x = int(710 - dist_blue[i][0])
-                        y = int(dist_yel[i][0])
-                        coordinate_final.append((x,y)) 
-        else:
-            if red is not None:
-                    x = int(1065 - 0.5*dist_yel[i][0]/abs(math.sin(ang_yel_red)))
-                    y = int(621 - dist_red[i][0]* 621/(max(fin_red)[0] + 30))
-                    coordinate_final.append((x,y))        
+    with open("ap_if_else_chain.py") as file:
+        exec(file.read())
+
 
     #---#
     
@@ -231,7 +200,7 @@ def combo(img, prev_img_pos = "Undefined"):
 #    bf.show_image(template2)
     temp3 = cv.resize(template2, (640, 360))
     vis = np.concatenate((img5, temp3), axis = 0)
-    bf.show_image(vis)
+#    bf.show_image(vis)
     
     #---#
     return([template2, vis])
@@ -255,8 +224,8 @@ bf.show_image(l)
 
 today = str(date.today())
 bf.createFolder("vid2frame/"+today)
-for i in  range(19, 26):
-    img = cv.imread("vid2frame/"+ "frame_v2_" + str(i) + ".png")
+for i in  range(58, 65):
+    img = cv.imread("vid2frame/all frames/"+ "frame_v2_" + str(i) + ".png")
     try:
         final_image = combo(img)
         cv.imwrite("vid2frame/" + today +"/comb_" + str(i) + ".png", final_image[1])

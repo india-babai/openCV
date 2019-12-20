@@ -36,9 +36,13 @@ def createFolder(directory):
 
 
 def show_image(mat, winname = ""):
-    cv.imshow(winname, mat)
-    print("Image showing on different window!")
-    cv.waitKey()
+    try:
+        cv.imshow(winname, mat)
+        print("Image showing on different window!")
+        cv.waitKey()
+    except Exception as e:
+        print(e)
+        
 #    return(cv.waitKey(k))
 #    if cv.waitKey(10) & 0xFF == ord('q'):
 #        cv.destroyAllWindows()
